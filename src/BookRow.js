@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { observer } from "mobx-react";
 
 class BookRow extends Component {
+  toggle(book) {
+    book.available = !book.available;
+  }
+
   render() {
     const book = this.props.book;
     const authors = book.authors.map(author => (
@@ -9,16 +14,16 @@ class BookRow extends Component {
         <Link to={`/authors/${author.id}`}>{author.name}</Link>
       </div>
     ));
+
     const availableButton = (
       <button
         className={`btn btn-${book.available ? "success" : "danger"}`}
-        onClick={() =>
-          alert("You need to make me 🎵 work work work work work 🎵")
-        }
+        onClick={() => this.toggle(book)}
       >
         {book.available ? "borrow" : "return"}
       </button>
     );
+
     return (
       <tr>
         <td>{availableButton}</td>
@@ -34,4 +39,4 @@ class BookRow extends Component {
   }
 }
 
-export default BookRow;
+export default observer(BookRow);
